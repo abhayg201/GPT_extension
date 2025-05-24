@@ -1,32 +1,36 @@
 {
-  "manifest_version": 3,
-  "name": "Selected Text Viewer",
-  "version": "1.0",
-  "description": "Shows the selected text from the page in a popup.",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
-  ],
- "action": {
-    "default_popup": "popup/popup.html"
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "js": ["content-script.js"],
-    "run_at": "document_idle"
-  }],
-  "web_accessible_resources": [
-    {
+    "manifest_version": 3,
+    "name": "Selected Text Viewer with ChatGPT",
+    "version": "1.0",
+    "description": "Shows the selected text from the page and gets ChatGPT responses.",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage"
+    ],
+    "host_permissions": [
+      "https://api.openai.com/*"
+    ],
+    "action": {
+      "default_popup": "popup/popup.html"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }],
+    "options_page": "settings/settings.html",
+    "web_accessible_resources": [{
       "resources": [
-        "src/templates/*",
-        "src/utils/*",
-        "src/components/*"
+        "settings/*.js",
+        "src/**/*.js"
       ],
       "matches": ["<all_urls>"]
+    }],
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
     }
-  ]
-} 
+  } 

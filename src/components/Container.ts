@@ -1,3 +1,4 @@
+import { ChatGPTService } from '../services/chatgpt-service';
 
 export class TextContainer {
   private container: HTMLElement | null = null;
@@ -65,7 +66,7 @@ export class TextContainer {
     }
   }
 
-  show(text: string, x: number, y: number): void {
+  async show(text: string, x: number, y: number): void {
     if (this.container) {
       console.log(`Showing container with text: "${text}" at position: x=${x}, y=${y}`);
       
@@ -77,6 +78,7 @@ export class TextContainer {
         contentElement.style.marginTop = '15px';
         contentElement.style.fontSize = '14px';
         contentElement.style.lineHeight = '1.4';
+        console.log('Content element updated with text:', text);
       }
       
       // Position the container
@@ -88,7 +90,10 @@ export class TextContainer {
       this.container.style.display = 'block';
       this.container.style.visibility = 'visible';
       
-      console.log('Container shown successfully');
+      // Start ChatGPT request
+      this.requestChatGPTResponse(text);
+      
+      console.log('Container positioned and made visible');
     } else {
       console.error('Container element not available');
     }
@@ -115,6 +120,51 @@ export class TextContainer {
     
     if (responseText) {
       responseText.textContent = isLoading ? '' : response;
+    }
+  }
+
+  private async requestChatGPTResponse(selectedText: string): Promise<void> {
+    const loadingSpinner = this.container?.querySelector('.loading-spinner') as HTMLElement;
+    const responseElement = this.container?.querySelector('.response-text') as HTMLElement;
+    
+    if (!loadingSpinner || !responseElement) {
+      console.error('Loading spinner or response element not found');
+      return;
+    }
+
+    try {
+      // Show loading state
+      loadingSpinner.style.display = 'block';
+      responseElement.textContent = '';
+      
+      console.log('Requesting ChatGPT response for:', selectedText);
+      
+      // Call ChatGPT API
+      const result = await ChatGPTService.sendMessage(selectedText);
+      
+      // Hide loading state
+      loadingSpinner.style.display = 'none';
+      
+      if (result.success && result.response) {
+        responseElement.textContent = result.response;
+        responseElement.style.color = '#333';
+        responseElement.style.marginTop = '10px';
+        responseElement.style.fontSize = '14px';
+        responseElement.style.lineHeight = '1.4';
+        console.log('ChatGPT response displayed successfully');
+      } else {
+        responseElement.textContent = result.error || 'Failed to get response from ChatGPT';
+        responseElement.style.color = '#d32f2f';
+        responseElement.style.fontStyle = 'italic';
+        console.error('ChatGPT request failed:', result.error);
+      }
+      
+    } catch (error) {
+      console.error('Error requesting ChatGPT response:', error);
+      loadingSpinner.style.display = 'none';
+      responseElement.textContent = 'Error: Failed to connect to ChatGPT';
+      responseElement.style.color = '#d32f2f';
+      responseElement.style.fontStyle = 'italic';
     }
   }
 } 

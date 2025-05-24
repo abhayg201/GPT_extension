@@ -1,33 +1,49 @@
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, UserConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-export default defineConfig(({ mode }) => ({
-  define: {
-    'process.env.NODE_ENV': JSON.stringify(mode)
-  },
+export default defineConfig({
   build: {
+    target: 'es2015',
+    minify: false, // Optional: disable minification for debugging
+    sourcemap: false,
     outDir: 'dist',
-    sourcemap: true,
+    assetsDir: '',
+
     rollupOptions: {
       input: {
-        background: resolve(__dirname, 'src/background.ts'),
         'content-script': resolve(__dirname, 'src/content-script.ts'),
-        popup: resolve(__dirname, 'src/popup/popup.ts'),
-        'reload-client': resolve(__dirname, 'src/reload-client.ts'),
-      },
-      output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
-        // Bundle everything into single files - no code splitting
-        manualChunks: undefined,
+        'background': resolve(__dirname, 'src/background.ts'),
+        'settings': resolve(__dirname, 'src/settings/settings.ts'),
+        'popup/popup': resolve(__dirname, 'src/popup/popup.ts')
       },
       external: [],
-      // Ensure content script bundles everything it needs
+      // Force bundling of all dependencies
+      treeshake: false,
+      output: chunk => {
+        const common = {
+          entryFileNames: '[name].js',
+          chunkFileNames: '[name].js',
+          assetFileNames: '[name][extname]',
+          inlineDynamicImports: true
+        };
+
+        if (chunk.name === 'background') {
+          return {
+            ...common,
+            format: 'esm'
+          };
+        }
+
+        return {
+          ...common,
+          format: 'iife',
+          name: chunk.name.replace(/\W/g, '_')
+        };
+      },
       preserveEntrySignatures: false,
     },
-    minify: false, // Keep readable for development
   },
   plugins: [
     viteStaticCopy({
@@ -53,6 +69,23 @@ export default defineConfig(({ mode }) => ({
           dest: 'src/styles'
         }
       ]
-    })
+    }),
+    {
+      name: 'copy-files',
+      writeBundle() {
+        // Copy settings.html
+        if (!existsSync('dist/settings')) {
+          mkdirSync('dist/settings', { recursive: true });
+        }
+        if (existsSync('src/settings/settings.html')) {
+          copyFileSync('src/settings/settings.html', 'dist/settings/settings.html');
+        }
+
+        // Copy manifest.json
+        copyFileSync('manifest.json', 'dist/manifest.json');
+
+    
+      }
+    }
   ]
-}));
+} as UserConfig);
