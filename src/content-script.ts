@@ -3,7 +3,7 @@ import { SelectionIcon } from './components/Icon';
 import { getSelectedText } from './utils/template-utils';
 
 // Content script that runs on all pages
-console.log('Content script loaded on:', window.location.href);
+console.log('Content script  on:', window.location.href);
 
 let icon: SelectionIcon | null = null;
 let container: TextContainer | null = null;

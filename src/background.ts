@@ -2,7 +2,7 @@
 console.log('Background script loaded');
 
 // Import reload client for development
-import './reload-client.js';
+import "./reload-client";
 
 // Listen for messages from content script or popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
