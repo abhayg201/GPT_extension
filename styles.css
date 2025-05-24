@@ -1,0 +1,22 @@
+/* styles.css */
+#selection-popup-icon {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 50%; /* Make it circular */
+  padding: 5px;
+  font-size: 16px; /* Adjust icon size */
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.1s ease-out;
+  line-height: 1; /* Ensure text icon is centered well */
+  text-align: center;
+  width: 20px; /* Fixed width for circle */
+  height: 20px; /* Fixed height for circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#selection-popup-icon:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.1);
+} 

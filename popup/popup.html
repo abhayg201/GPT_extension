@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Selected Text</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 300px; /* Adjust width as needed */
+      min-height: 50px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+    }
+    #textContainer {
+      white-space: pre-wrap; /* Preserve line breaks and spaces */
+      word-wrap: break-word; /* Break long words to prevent overflow */
+      max-height: 200px; /* Optional: limit height and add scroll */
+      overflow-y: auto;   /* Optional: enable scroll if content overflows */
+    }
+    #noSelection {
+      color: #888;
+      font-style: italic;
+    }
+    #errorMessage {
+      color: red;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div id="textContainer">Loading...</div>
+  <script src="popup.js"></script>
+</body>
+</html> 
