@@ -16,7 +16,6 @@
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "type": "module",
     "js": ["content_script_module.js"],
     "run_at": "document_idle"
   }],
@@ -30,4 +29,4 @@
       "matches": ["<all_urls>"]
     }
   ]
-} 
+}
