@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-json",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-eslint",
+    "ms-vscode.debugger-for-chrome",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-chrome-debug-core",
+    "usernamehw.errorlens"
+  ]
+} 

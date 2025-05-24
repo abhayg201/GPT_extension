@@ -1,0 +1,32 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": false,
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true
+  },
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "node"
+  },
+  "debug.javascript.terminalOptions": {
+    "skipFiles": ["<node_internals>/**"]
+  },
+  "emmet.includeLanguages": {
+    "typescript": "javascript"
+  }
+} 
