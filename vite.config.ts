@@ -13,34 +13,18 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
-        'content-script': resolve(__dirname, 'src/content-script.ts'),
-        'background': resolve(__dirname, 'src/background.ts'),
-        'settings': resolve(__dirname, 'src/settings/settings.ts'),
-        'popup/popup': resolve(__dirname, 'src/popup/popup.ts')
+        background: resolve(__dirname, 'src/background.ts'),
+        settings: resolve(__dirname, 'src/settings/settings.ts'),
+        'popup/popup': resolve(__dirname, 'src/popup/popup.ts'),
       },
       external: [],
       // Force bundling of all dependencies
       treeshake: false,
-      output: chunk => {
-        const common = {
-          entryFileNames: '[name].js',
-          chunkFileNames: '[name].js',
-          assetFileNames: '[name][extname]',
-          inlineDynamicImports: true
-        };
-
-        if (chunk.name === 'background') {
-          return {
-            ...common,
-            format: 'esm'
-          };
-        }
-
-        return {
-          ...common,
-          format: 'iife',
-          name: chunk.name.replace(/\W/g, '_')
-        };
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name][extname]',
+        inlineDynamicImports: false,
       },
       preserveEntrySignatures: false,
     },
@@ -50,25 +34,25 @@ export default defineConfig({
       targets: [
         {
           src: 'src/manifest.json',
-          dest: '.'
+          dest: '.',
         },
         {
           src: 'src/popup/popup.html',
-          dest: 'popup'
+          dest: 'popup',
         },
         {
           src: 'src/popup/popup.css',
-          dest: 'popup'
+          dest: 'popup',
         },
         {
           src: 'src/templates/*',
-          dest: 'src/templates'
+          dest: 'src/templates',
         },
         {
           src: 'src/styles/components.css',
-          dest: 'src/styles'
-        }
-      ]
+          dest: 'src/styles',
+        },
+      ],
     }),
     {
       name: 'copy-files',
@@ -78,14 +62,15 @@ export default defineConfig({
           mkdirSync('dist/settings', { recursive: true });
         }
         if (existsSync('src/settings/settings.html')) {
-          copyFileSync('src/settings/settings.html', 'dist/settings/settings.html');
+          copyFileSync(
+            'src/settings/settings.html',
+            'dist/settings/settings.html'
+          );
         }
 
         // Copy manifest.json
         copyFileSync('manifest.json', 'dist/manifest.json');
-
-    
-      }
-    }
-  ]
+      },
+    },
+  ],
 } as UserConfig);

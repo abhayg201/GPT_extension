@@ -4,8 +4,9 @@
   "description": "Chrome extension with TypeScript and Vite",
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch",
-    "dev:reload": "concurrently \"npm run dev\" \"npm run reload\"",
+    "dev:iife": "vite build --config vite.config.iife.ts --watch",
+    "dev:es": "vite build --config vite.config.ts --watch",
+    "dev:reload": "concurrently \"npm run dev:iife\" \"npm run dev:es\" \"npm run reload\"",
     "reload": "node scripts/reload.js",
     "build": "vite build",
     "build:debug": "vite build --mode development",
