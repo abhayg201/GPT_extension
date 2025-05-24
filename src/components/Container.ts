@@ -1,64 +1,105 @@
-import { loadTemplate } from '../utils/template-utils.js';
-
-
-const templateHTML = `<div id="selected-text-container" class="text-container">
-  <span class="close-button">✖</span>
-  <div id="selected-text-content" class="content"></div>
-  <div id="gpt-response" class="gpt-response">
-    <div class="loading-spinner" style="display: none;">Loading...</div>
-    <div class="response-text"></div>
-  </div>
-</div> `
 
 export class TextContainer {
   private container: HTMLElement | null = null;
 
+  constructor() {
+    console.log('TextContainer constructor called');
+  }
+
   async init(): Promise<TextContainer> {
     try {
+      console.log('Initializing TextContainer...');
+      
+      // Create container element directly
       this.container = document.createElement('div');
-      this.container.innerHTML = templateHTML;
-      if (!this.container) {
-        console.error('Failed to load container template');
-        return this;
-      }
-      this.setupEventListeners();
+      this.container.id = 'selected-text-container';
+      this.container.className = 'text-container';
+      
+      // Create the HTML structure
+      this.container.innerHTML = `
+        <span class="close-button">✖</span>
+        <div id="selected-text-content" class="content"></div>
+        <div id="gpt-response" class="gpt-response">
+          <div class="loading-spinner" style="display: none;">Loading...</div>
+          <div class="response-text"></div>
+        </div>
+      `;
+      
+      // Set styles directly
+      this.container.style.position = 'absolute';
+      this.container.style.zIndex = '100000';
+      this.container.style.display = 'none';
+      this.container.style.visibility = 'hidden';
+      this.container.style.backgroundColor = '#fff';
+      this.container.style.border = '1px solid #ccc';
+      this.container.style.padding = '10px';
+      this.container.style.borderRadius = '6px';
+      this.container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+      this.container.style.minWidth = '300px';
+      this.container.style.wordBreak = 'break-word';
+      this.container.style.fontFamily = 'Arial, sans-serif';
+      
       document.body.appendChild(this.container);
+      console.log('Container created and appended to body:', this.container);
+      
+      // Set up close button
+      const closeButton = this.container.querySelector('.close-button') as HTMLElement;
+      if (closeButton) {
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '5px';
+        closeButton.style.right = '8px';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.color = '#999';
+        closeButton.style.fontSize = '14px';
+        closeButton.style.fontWeight = 'bold';
+        
+        closeButton.addEventListener('click', () => {
+          this.hide();
+        });
+      }
+      
+      return this;
     } catch (error) {
-      console.error('Error loading container template:', error);
-    }
-    return this;
-  }
-
-  private setupEventListeners(): void {
-    if (!this.container) return;
-    
-    const closeBtn = this.container.querySelector('.close-button') as HTMLElement;
-    if (closeBtn) {
-      closeBtn.onclick = () => this.remove();
+      console.error('Error initializing TextContainer:', error);
+      throw error;
     }
   }
 
-  show(selectedText: string, x: number, y: number): void {
-    if (!this.container) return;
-    
-    const contentElement = this.container.querySelector('#selected-text-content') as HTMLElement;
-    if (contentElement) {
-      contentElement.textContent = selectedText;
+  show(text: string, x: number, y: number): void {
+    if (this.container) {
+      console.log(`Showing container with text: "${text}" at position: x=${x}, y=${y}`);
+      
+      // Update the text content
+      const contentElement = this.container.querySelector('#selected-text-content') as HTMLElement;
+      if (contentElement) {
+        contentElement.textContent = text;
+        contentElement.style.color = '#000';
+        contentElement.style.marginTop = '15px';
+        contentElement.style.fontSize = '14px';
+        contentElement.style.lineHeight = '1.4';
+      }
+      
+      // Position the container
+      const left = x + window.scrollX + 5;
+      const top = y + window.scrollY + 5;
+      
+      this.container.style.left = `${left}px`;
+      this.container.style.top = `${top}px`;
+      this.container.style.display = 'block';
+      this.container.style.visibility = 'visible';
+      
+      console.log('Container shown successfully');
+    } else {
+      console.error('Container element not available');
     }
-    
-    this.container.style.left = `${x + window.scrollX + 10}px`;
-    this.container.style.top = `${y + window.scrollY + 10}px`;
-    this.container.style.display = 'block';
   }
 
   hide(): void {
-    if (!this.container) return;
-    this.container.style.display = 'none';
-  }
-
-  remove(): void {
-    if (!this.container) return;
-    this.container.remove();
+    if (this.container) {
+      this.container.style.display = 'none';
+      this.container.style.visibility = 'hidden';
+      console.log('Container hidden');
+    }
   }
 
   // Method to update GPT response section

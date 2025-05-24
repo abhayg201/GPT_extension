@@ -1,5 +1,5 @@
 // Utility function for loading templates
-export async function loadTemplate(templatePath: string): Promise<HTMLElement> {
+export async function loadTemplate(templatePath: string): Promise<HTMLElement | null> {
   try {
     // Make sure we're getting a valid extension URL
     if (!chrome || !chrome.runtime || !chrome.runtime.getURL) {
@@ -20,12 +20,7 @@ export async function loadTemplate(templatePath: string): Promise<HTMLElement> {
     const template = document.createElement('template');
     template.innerHTML = text.trim();
     
-    const element = template.content.firstElementChild as HTMLElement;
-    if (!element) {
-      throw new Error('Template did not contain a valid HTML element');
-    }
-    
-    return element;
+    return template.content.firstElementChild as HTMLElement;
   } catch (error) {
     console.error(`Error loading template ${templatePath}:`, error);
     throw error;
@@ -34,5 +29,6 @@ export async function loadTemplate(templatePath: string): Promise<HTMLElement> {
 
 // Helper function to get selected text
 export function getSelectedText(): string {
-  return window.getSelection()?.toString().trim() || '';
+  const selection = window.getSelection();
+  return selection ? selection.toString().trim() : '';
 } 

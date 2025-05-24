@@ -1,0 +1,56 @@
+.text-container {
+  position: absolute;
+  z-index: 100000;
+  display: none;
+  visibility: hidden;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  min-width: 300px;
+  word-break: break-word;
+  font-family: Arial, sans-serif;
+}
+
+.text-container .close-button {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+}
+
+.text-container .close-button:hover {
+  color: #333;
+}
+
+.text-container .content {
+  color: #000;
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.text-container .gpt-response {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.text-container .loading-spinner {
+  color: #666;
+  font-style: italic;
+}
+
+.text-container .response-text {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+} 
