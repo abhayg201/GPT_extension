@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   build: {
     outDir: 'dist', // keep outputs separate
+    emptyOutDir: false,  
     rollupOptions: {
       input: resolve(__dirname, 'src/content-script.ts'),
       output: {

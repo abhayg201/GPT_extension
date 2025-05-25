@@ -10,7 +10,7 @@ export default defineConfig({
     sourcemap: false,
     outDir: 'dist',
     assetsDir: '',
-
+    emptyOutDir: false,  
     rollupOptions: {
       input: {
         background: resolve(__dirname, 'src/background.ts'),

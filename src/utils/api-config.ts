@@ -8,7 +8,7 @@ export interface ApiConfig {
 export class ApiConfigManager {
   private static readonly STORAGE_KEY = 'chatgpt_api_config';
   private static readonly DEFAULT_MODEL = 'gpt-3.5-turbo';
-  private static readonly DEFAULT_MAX_TOKENS = 150;
+  private static readonly DEFAULT_MAX_TOKENS = 400;
 
   static async saveApiKey(apiKey: string): Promise<void> {
     try {

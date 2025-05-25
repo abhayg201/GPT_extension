@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         showStatus('Testing connection...', 'info');
         
         try {
-            const result = await ChatGPTService.sendMessage('Hello', 'Respond with just "Hello back!" to test the connection.');
+            const result = await ChatGPTService.sendMessage('Hello', 'whats your name nigga.');
             
             if (result.success) {
                 showStatus('Connection test successful!', 'success');
