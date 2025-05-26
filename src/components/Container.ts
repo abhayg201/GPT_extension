@@ -135,22 +135,26 @@ export class TextContainer {
     try {
       // Show loading state
       loadingSpinner.style.display = 'block';
-      responseElement.textContent = '';
+      responseElement.innerHTML = ''; // Changed to innerHTML for better formatting
       
       console.log('Requesting ChatGPT response for:', selectedText);
       
-      // Call ChatGPT API
+      // Call ChatGPT API with enhanced context
       const result = await ChatGPTService.sendMessage(selectedText);
       
       // Hide loading state
       loadingSpinner.style.display = 'none';
       
       if (result.success && result.response) {
-        responseElement.textContent = result.response;
+        // Format the response for better readability
+        const formattedResponse = this.formatResponse(result.response);
+        responseElement.innerHTML = formattedResponse;
         responseElement.style.color = '#333';
         responseElement.style.marginTop = '10px';
         responseElement.style.fontSize = '14px';
         responseElement.style.lineHeight = '1.4';
+        responseElement.style.maxHeight = '400px';
+        responseElement.style.overflowY = 'auto';
         console.log('ChatGPT response displayed successfully');
       } else {
         responseElement.textContent = result.error || 'Failed to get response from ChatGPT';
@@ -166,5 +170,15 @@ export class TextContainer {
       responseElement.style.color = '#d32f2f';
       responseElement.style.fontStyle = 'italic';
     }
+  }
+
+  private formatResponse(response: string): string {
+    // Convert markdown-like formatting to HTML
+    return response
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+      .replace(/^\d+\.\s+\*\*(.*?)\*\*:/gm, '<div style="margin-top: 12px;"><strong>$1:</strong></div>') // Numbered headers
+      .replace(/^-\s+/gm, '• ') // Bullet points
+      .replace(/\n/g, '<br>') // Line breaks
+      .replace(/`(.*?)`/g, '<code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">$1</code>'); // Inline code
   }
 } 
